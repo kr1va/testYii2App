@@ -16,8 +16,10 @@ class TestappController extends Controller
         $request = Yii::$app->getRequest();
         $billingTable = Billing::tableName();
         $builder = User::find()->innerJoin($billingTable, "$billingTable.user_id = id");
-        if ($request->get('filter')) {
-            $builder->andWhere(['>', 'amount', $request->get('filter')]);
+        if ($request->get('filter') && $request->get('sign')&& $request->get('sign') != '') {
+            $builder->andWhere([$request->get('sign'), 'amount', $request->get('filter')]);
+        } else {
+           $builder;
         }
         $users = $builder->orderBy(["$billingTable.amount" => SORT_DESC])->all();
         return $this->render('index', compact('users'));

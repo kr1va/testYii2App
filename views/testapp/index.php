@@ -1,4 +1,19 @@
 Here comes Test Yii2 App<br>
+
+<form action="/testapp" method="get">
+    <div>
+        <p>Фильтр</p>
+        <select id="sign" name="sign">
+            <option value="">Выбрать</option>
+            <option value=">">Больше</option>
+            <option value="<">Меньше</option>
+            <option value="=">Равно</option>
+        </select>
+        <input name="filter" id="filter" value="" placeholder="Введите значение">
+        <button>Фильтровать</button>
+    </div>
+</form>
+
 <?php
 foreach ($users as $user) {
     echo '<ul>';
@@ -8,3 +23,4 @@ foreach ($users as $user) {
     }
     echo '</ul>';
 }
+?>

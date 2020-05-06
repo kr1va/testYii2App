@@ -3,7 +3,7 @@
 
 namespace app\models;
 
-
+use Yii;
 use yii\db\ActiveRecord;
 
 class User extends ActiveRecord
@@ -29,7 +29,7 @@ class User extends ActiveRecord
             'id' => 'ID',
             'user_name' => 'Имя',
             'user_address' => 'Адресс',
-            'amount' => 'Summa'
+            'amount' => 'Сумма'
 
         ];
     }
@@ -41,8 +41,12 @@ class User extends ActiveRecord
 
     public function getMaxBill()
     {
-        return Billing::find()->andWhere(['user_id' => $this->id])->orderBy(['amount' => SORT_DESC])->asArray()->all();
+        $request = Yii::$app->getRequest();
+        if ($request->get('filter') && $request->get('sign') && $request->get('sign') != '') {
+            return Billing::find()->andWhere('user_id = :user_id AND amount ' . $request->get('sign') . ':filter', [':user_id' => $this->id, ':filter' => $request->get('filter')])->orderBy(['amount' => SORT_DESC])->asArray()->all();
+        } else {
+            return Billing::find()->andWhere(['user_id' => $this->id])->orderBy(['amount' => SORT_DESC])->asArray()->all();
+        }
     }
-
-
+    
 }
